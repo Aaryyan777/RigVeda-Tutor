@@ -5,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { BookOpen, Sparkles, Music, Network, Flame, Sun, Menu, Shield, GraduationCap, Brain, LucideIcon } from 'lucide-react';
+import RigvedaNav from '@/components/RigvedaNav';
 import ThemeIn30s from '@/components/ThemeIn30s';
 import GayatriDeepDive from '@/components/GayatriDeepDive';
 import ChandasCanvas from '@/components/ChandasCanvas';
@@ -15,40 +16,21 @@ import AccentTutor from '@/components/AccentTutor';
 import MetreInspector from '@/components/MetreInspector';
 import VedicQuiz from '@/components/VedicQuiz';
 import SamhitaLinter from '@/components/SamhitaLinter';
+import MeterAsMusic from '@/components/MeterAsMusic';
+import Link from 'next/link';
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState('overview');
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="border-b bg-card/50 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[var(--vedic-saffron)] to-[var(--vedic-amber)] flex items-center justify-center mandala-glow">
-                <BookOpen className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-[var(--vedic-saffron)] to-[var(--vedic-amber)] bg-clip-text text-transparent">
-                  Rig Veda Explorer
-                </h1>
-                <p className="text-sm text-muted-foreground">
-                  Interactive Digital Corpus of the Rigveda Saṁhitā
-                </p>
-              </div>
-            </div>
-            <Badge variant="secondary" className="hidden md:flex">
-              Mandalas 1-10 • VedaWeb API
-            </Badge>
-          </div>
-        </div>
-      </header>
+      {/* Navigation */}
+      <RigvedaNav />
 
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-8">
-          <TabsList className="grid w-full grid-cols-3 md:grid-cols-5 lg:grid-cols-10 h-auto gap-2 bg-muted/50 p-2">
+          <TabsList className="grid w-full grid-cols-3 md:grid-cols-6 lg:grid-cols-12 h-auto gap-2 bg-muted/50 p-2">
             <TabsTrigger value="overview" className="gap-2">
               <Sparkles className="w-4 h-4" />
               <span className="hidden sm:inline">Overview</span>
@@ -93,6 +75,10 @@ export default function Home() {
               <Shield className="w-4 h-4" />
               <span className="hidden sm:inline">Linter</span>
             </TabsTrigger>
+            <TabsTrigger value="music" className="gap-2">
+              <Music className="w-4 h-4" />
+              <span className="hidden sm:inline">Music</span>
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-6">
@@ -104,8 +90,7 @@ export default function Home() {
                   Explore the Ancient Wisdom of Rig Veda
                 </h2>
                 <p className="text-lg opacity-90 mb-6">
-                  Interactive tools to explore the oldest sacred texts of Hinduism through 
-                  metre visualization, deity networks, and instant verse analysis powered by VedaWeb API.
+                  Interactive, multilingual platform for exploring, reading, searching, and studying the Rigveda with original Sanskrit text, word-by-word transliteration, English translations, and audio recitations.
                 </p>
                 <div className="flex flex-wrap gap-3">
                   <Button 
@@ -118,148 +103,183 @@ export default function Home() {
                     Quick Start
                   </Button>
                   <Button 
-                    onClick={() => setActiveTab('gayatri')}
                     variant="outline"
                     size="lg"
                     className="gap-2 border-white text-white hover:bg-white/20"
+                    asChild
                   >
-                    <Sun className="w-5 h-5" />
-                    Gāyatrī Mantra
+                    <Link href="/mandala/1">
+                      <BookOpen className="w-5 h-5" />
+                      Browse Mandalas
+                    </Link>
                   </Button>
                 </div>
               </div>
             </div>
 
+            {/* Mandala Selection Cards */}
+            <div>
+              <h3 className="text-2xl font-bold mb-4">Browse by Mandala</h3>
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                {Array.from({ length: 10 }, (_, i) => i + 1).map((num) => (
+                  <Link key={num} href={`/mandala/${num}`}>
+                    <div className="p-6 rounded-xl border bg-card hover:shadow-lg transition-all hover:scale-105 cursor-pointer text-center">
+                      <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[var(--vedic-saffron)] to-[var(--vedic-amber)] flex items-center justify-center mx-auto mb-3 mandala-glow">
+                        <BookOpen className="w-8 h-8 text-white" />
+                      </div>
+                      <h4 className="font-bold">Mandala {num}</h4>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+
             {/* Features Grid */}
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <div 
-                className="p-6 rounded-xl border bg-card hover:shadow-lg transition-shadow cursor-pointer"
-                onClick={() => setActiveTab('quick')}
-              >
-                <div className="w-12 h-12 rounded-lg bg-[var(--vedic-saffron)]/10 flex items-center justify-center mb-4">
-                  <Sparkles className="w-6 h-6 text-[var(--vedic-saffron)]" />
+            <div>
+              <h3 className="text-2xl font-bold mb-4">Interactive Features</h3>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div 
+                  className="p-6 rounded-xl border bg-card hover:shadow-lg transition-shadow cursor-pointer"
+                  onClick={() => setActiveTab('quick')}
+                >
+                  <div className="w-12 h-12 rounded-lg bg-[var(--vedic-saffron)]/10 flex items-center justify-center mb-4">
+                    <Sparkles className="w-6 h-6 text-[var(--vedic-saffron)]" />
+                  </div>
+                  <h3 className="text-lg font-semibold mb-2">Theme in 30s</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Get instant insights with deity, metre, and translation for any verse in under 30 seconds.
+                  </p>
                 </div>
-                <h3 className="text-lg font-semibold mb-2">Theme in 30s</h3>
-                <p className="text-sm text-muted-foreground">
-                  Get instant insights with deity, metre, and translation for any verse in under 30 seconds.
-                </p>
-              </div>
 
-              <div 
-                className="p-6 rounded-xl border bg-card hover:shadow-lg transition-shadow cursor-pointer"
-                onClick={() => setActiveTab('gayatri')}
-              >
-                <div className="w-12 h-12 rounded-lg bg-[var(--vedic-gold)]/10 flex items-center justify-center mb-4">
-                  <Sun className="w-6 h-6 text-[var(--vedic-gold)]" />
+                <div 
+                  className="p-6 rounded-xl border bg-card hover:shadow-lg transition-shadow cursor-pointer"
+                  onClick={() => setActiveTab('gayatri')}
+                >
+                  <div className="w-12 h-12 rounded-lg bg-[var(--vedic-gold)]/10 flex items-center justify-center mb-4">
+                    <Sun className="w-6 h-6 text-[var(--vedic-gold)]" />
+                  </div>
+                  <h3 className="text-lg font-semibold mb-2">Gāyatrī Deep Dive</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Comprehensive analysis of RV 3.62.10 with accent marks, scansion, and translations.
+                  </p>
                 </div>
-                <h3 className="text-lg font-semibold mb-2">Gāyatrī Deep Dive</h3>
-                <p className="text-sm text-muted-foreground">
-                  Comprehensive analysis of RV 3.62.10 with accent marks, scansion, and translations.
-                </p>
-              </div>
 
-              <div 
-                className="p-6 rounded-xl border bg-card hover:shadow-lg transition-shadow cursor-pointer"
-                onClick={() => setActiveTab('chandas')}
-              >
-                <div className="w-12 h-12 rounded-lg bg-[var(--vedic-amber)]/10 flex items-center justify-center mb-4">
-                  <Music className="w-6 h-6 text-[var(--vedic-amber)]" />
+                <div 
+                  className="p-6 rounded-xl border bg-card hover:shadow-lg transition-shadow cursor-pointer"
+                  onClick={() => setActiveTab('chandas')}
+                >
+                  <div className="w-12 h-12 rounded-lg bg-[var(--vedic-amber)]/10 flex items-center justify-center mb-4">
+                    <Music className="w-6 h-6 text-[var(--vedic-amber)]" />
+                  </div>
+                  <h3 className="text-lg font-semibold mb-2">Chandas Canvas</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Interactive metre visualization with animated syllable patterns and rhythmic scansion.
+                  </p>
                 </div>
-                <h3 className="text-lg font-semibold mb-2">Chandas Canvas</h3>
-                <p className="text-sm text-muted-foreground">
-                  Interactive metre visualization with animated syllable patterns and rhythmic scansion.
-                </p>
-              </div>
 
-              <div 
-                className="p-6 rounded-xl border bg-card hover:shadow-lg transition-shadow cursor-pointer"
-                onClick={() => setActiveTab('deities')}
-              >
-                <div className="w-12 h-12 rounded-lg bg-[var(--vedic-crimson)]/10 flex items-center justify-center mb-4">
-                  <Flame className="w-6 h-6 text-[var(--vedic-crimson)]" />
+                <div 
+                  className="p-6 rounded-xl border bg-card hover:shadow-lg transition-shadow cursor-pointer"
+                  onClick={() => setActiveTab('deities')}
+                >
+                  <div className="w-12 h-12 rounded-lg bg-[var(--vedic-crimson)]/10 flex items-center justify-center mb-4">
+                    <Flame className="w-6 h-6 text-[var(--vedic-crimson)]" />
+                  </div>
+                  <h3 className="text-lg font-semibold mb-2">Deity Explorer</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Visualize deity distribution and co-occurrences across all ten mandalas.
+                  </p>
                 </div>
-                <h3 className="text-lg font-semibold mb-2">Deity Explorer</h3>
-                <p className="text-sm text-muted-foreground">
-                  Visualize deity distribution and co-occurrences across all ten mandalas.
-                </p>
-              </div>
 
-              <div 
-                className="p-6 rounded-xl border bg-card hover:shadow-lg transition-shadow cursor-pointer"
-                onClick={() => setActiveTab('graph')}
-              >
-                <div className="w-12 h-12 rounded-lg bg-[var(--vedic-terracotta)]/10 flex items-center justify-center mb-4">
-                  <Network className="w-6 h-6 text-[var(--vedic-terracotta)]" />
+                <div 
+                  className="p-6 rounded-xl border bg-card hover:shadow-lg transition-shadow cursor-pointer"
+                  onClick={() => setActiveTab('graph')}
+                >
+                  <div className="w-12 h-12 rounded-lg bg-[var(--vedic-terracotta)]/10 flex items-center justify-center mb-4">
+                    <Network className="w-6 h-6 text-[var(--vedic-terracotta)]" />
+                  </div>
+                  <h3 className="text-lg font-semibold mb-2">Knowledge Graph</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Explore connections between mandalas, deities, rishis, and metres in an interactive network.
+                  </p>
                 </div>
-                <h3 className="text-lg font-semibold mb-2">Knowledge Graph</h3>
-                <p className="text-sm text-muted-foreground">
-                  Explore connections between mandalas, deities, rishis, and metres in an interactive network.
-                </p>
-              </div>
 
-              <div 
-                className="p-6 rounded-xl border bg-card hover:shadow-lg transition-shadow cursor-pointer"
-                onClick={() => setActiveTab('moodboard')}
-              >
-                <div className="w-12 h-12 rounded-lg bg-[var(--vedic-saffron)]/10 flex items-center justify-center mb-4">
-                  <BookOpen className="w-6 h-6 text-[var(--vedic-saffron)]" />
+                <div 
+                  className="p-6 rounded-xl border bg-card hover:shadow-lg transition-shadow cursor-pointer"
+                  onClick={() => setActiveTab('moodboard')}
+                >
+                  <div className="w-12 h-12 rounded-lg bg-[var(--vedic-saffron)]/10 flex items-center justify-center mb-4">
+                    <BookOpen className="w-6 h-6 text-[var(--vedic-saffron)]" />
+                  </div>
+                  <h3 className="text-lg font-semibold mb-2">Mandala Moodboard</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Feel the character of each mandala through deity and metre distribution visualizations.
+                  </p>
                 </div>
-                <h3 className="text-lg font-semibold mb-2">Mandala Moodboard</h3>
-                <p className="text-sm text-muted-foreground">
-                  Feel the character of each mandala through deity and metre distribution visualizations.
-                </p>
-              </div>
 
-              <div 
-                className="p-6 rounded-xl border bg-card hover:shadow-lg transition-shadow cursor-pointer"
-                onClick={() => setActiveTab('accent')}
-              >
-                <div className="w-12 h-12 rounded-lg bg-[var(--vedic-gold)]/10 flex items-center justify-center mb-4">
-                  <GraduationCap className="w-6 h-6 text-[var(--vedic-gold)]" />
+                <div 
+                  className="p-6 rounded-xl border bg-card hover:shadow-lg transition-shadow cursor-pointer"
+                  onClick={() => setActiveTab('accent')}
+                >
+                  <div className="w-12 h-12 rounded-lg bg-[var(--vedic-gold)]/10 flex items-center justify-center mb-4">
+                    <GraduationCap className="w-6 h-6 text-[var(--vedic-gold)]" />
+                  </div>
+                  <h3 className="text-lg font-semibold mb-2">Accent Tutor</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Learn Vedic accent marks with Unicode codepoints and pronunciation guidance.
+                  </p>
                 </div>
-                <h3 className="text-lg font-semibold mb-2">Accent Tutor</h3>
-                <p className="text-sm text-muted-foreground">
-                  Learn Vedic accent marks with Unicode codepoints and pronunciation guidance.
-                </p>
-              </div>
 
-              <div 
-                className="p-6 rounded-xl border bg-card hover:shadow-lg transition-shadow cursor-pointer"
-                onClick={() => setActiveTab('inspector')}
-              >
-                <div className="w-12 h-12 rounded-lg bg-[var(--vedic-amber)]/10 flex items-center justify-center mb-4">
-                  <Music className="w-6 h-6 text-[var(--vedic-amber)]" />
+                <div 
+                  className="p-6 rounded-xl border bg-card hover:shadow-lg transition-shadow cursor-pointer"
+                  onClick={() => setActiveTab('inspector')}
+                >
+                  <div className="w-12 h-12 rounded-lg bg-[var(--vedic-amber)]/10 flex items-center justify-center mb-4">
+                    <Music className="w-6 h-6 text-[var(--vedic-amber)]" />
+                  </div>
+                  <h3 className="text-lg font-semibold mb-2">Metre Inspector</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Click any pāda to explore syllable counts and Rigvedic examples.
+                  </p>
                 </div>
-                <h3 className="text-lg font-semibold mb-2">Metre Inspector</h3>
-                <p className="text-sm text-muted-foreground">
-                  Click any pāda to explore syllable counts and Rigvedic examples.
-                </p>
-              </div>
 
-              <div 
-                className="p-6 rounded-xl border bg-card hover:shadow-lg transition-shadow cursor-pointer"
-                onClick={() => setActiveTab('quiz')}
-              >
-                <div className="w-12 h-12 rounded-lg bg-[var(--vedic-crimson)]/10 flex items-center justify-center mb-4">
-                  <Brain className="w-6 h-6 text-[var(--vedic-crimson)]" />
+                <div 
+                  className="p-6 rounded-xl border bg-card hover:shadow-lg transition-shadow cursor-pointer"
+                  onClick={() => setActiveTab('quiz')}
+                >
+                  <div className="w-12 h-12 rounded-lg bg-[var(--vedic-crimson)]/10 flex items-center justify-center mb-4">
+                    <Brain className="w-6 h-6 text-[var(--vedic-crimson)]" />
+                  </div>
+                  <h3 className="text-lg font-semibold mb-2">Vedic Quiz</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Test your knowledge of metres, deities, and accents in 60 seconds!
+                  </p>
                 </div>
-                <h3 className="text-lg font-semibold mb-2">Vedic Quiz</h3>
-                <p className="text-sm text-muted-foreground">
-                  Test your knowledge of metres, deities, and accents in 60 seconds!
-                </p>
-              </div>
 
-              <div 
-                className="p-6 rounded-xl border bg-card hover:shadow-lg transition-shadow cursor-pointer"
-                onClick={() => setActiveTab('linter')}
-              >
-                <div className="w-12 h-12 rounded-lg bg-[var(--vedic-terracotta)]/10 flex items-center justify-center mb-4">
-                  <Shield className="w-6 h-6 text-[var(--vedic-terracotta)]" />
+                <div 
+                  className="p-6 rounded-xl border bg-card hover:shadow-lg transition-shadow cursor-pointer"
+                  onClick={() => setActiveTab('linter')}
+                >
+                  <div className="w-12 h-12 rounded-lg bg-[var(--vedic-terracotta)]/10 flex items-center justify-center mb-4">
+                    <Shield className="w-6 h-6 text-[var(--vedic-terracotta)]" />
+                  </div>
+                  <h3 className="text-lg font-semibold mb-2">Saṁhitā Linter</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Validate verse IDs and reject Khila or non-Saṁhitā content with transparent logs.
+                  </p>
                 </div>
-                <h3 className="text-lg font-semibold mb-2">Saṁhitā Linter</h3>
-                <p className="text-sm text-muted-foreground">
-                  Validate verse IDs and reject Khila or non-Saṁhitā content with transparent logs.
-                </p>
+
+                <div 
+                  className="p-6 rounded-xl border bg-card hover:shadow-lg transition-shadow cursor-pointer"
+                  onClick={() => setActiveTab('music')}
+                >
+                  <div className="w-12 h-12 rounded-lg bg-[var(--vedic-amber)]/10 flex items-center justify-center mb-4">
+                    <Music className="w-6 h-6 text-[var(--vedic-amber)]" />
+                  </div>
+                  <h3 className="text-lg font-semibold mb-2">Metre as Music</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Convert syllable lengths of hymns to percussive sequences with customizable instruments.
+                  </p>
+                </div>
               </div>
             </div>
 
@@ -323,6 +343,10 @@ export default function Home() {
           <TabsContent value="linter">
             <SamhitaLinter />
           </TabsContent>
+
+          <TabsContent value="music">
+            <MeterAsMusic />
+          </TabsContent>
         </Tabs>
       </main>
 
@@ -331,17 +355,21 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="text-sm text-muted-foreground text-center md:text-left">
-              <p className="font-semibold mb-1">Rig Veda Explorer</p>
-              <p>Built for Rig Veda Hackathon • Data from VedaWeb Digital Corpus</p>
+              <p className="font-semibold mb-1">Rigveda Online</p>
+              <p>Interactive Digital Corpus • Data from VedaWeb & Public Domain Sources</p>
             </div>
             <div className="flex flex-wrap gap-4 text-xs text-muted-foreground">
               <a href="https://vedaweb.uni-koeln.de" target="_blank" rel="noopener noreferrer" className="hover:text-foreground">
                 VedaWeb API
               </a>
               <span>•</span>
-              <span>Public Domain Translations</span>
+              <a href="https://www.learnsanskrit.cc" target="_blank" rel="noopener noreferrer" className="hover:text-foreground">
+                Sanskrit Dictionary
+              </a>
               <span>•</span>
-              <span>Rigveda Saṁhitā Only</span>
+              <a href="https://github.com/aasi-archive/rv-audio" target="_blank" rel="noopener noreferrer" className="hover:text-foreground">
+                Audio Archive
+              </a>
             </div>
           </div>
         </div>
