@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -21,6 +21,18 @@ import Link from 'next/link';
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState('overview');
+
+  // Handle hash navigation
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash.slice(1);
+      if (hash) setActiveTab(hash);
+    };
+    
+    handleHashChange();
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
 
   return (
     <div className="min-h-screen bg-background">
@@ -103,9 +115,9 @@ export default function Home() {
                     Quick Start
                   </Button>
                   <Button 
-                    variant="outline"
+                    variant="secondary"
                     size="lg"
-                    className="gap-2 border-white text-white hover:bg-white/20"
+                    className="gap-2"
                     asChild
                   >
                     <Link href="/mandala/1">

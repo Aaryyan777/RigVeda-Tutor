@@ -1,16 +1,16 @@
 "use client";
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { BookOpen, Menu, Moon, Sun, Search, Sparkles, Music, Network, Flame, Shield, GraduationCap, Brain } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { BookOpen, Search, HelpCircle, Info, Mail, Github, ChevronDown, Moon, Sun, Type } from 'lucide-react';
-import Link from 'next/link';
+import { Input } from '@/components/ui/input';
 import { useRouter } from 'next/navigation';
 
 export default function RigvedaNav() {
@@ -77,10 +77,25 @@ export default function RigvedaNav() {
 
   const mandalas = Array.from({ length: 10 }, (_, i) => i + 1);
 
+  const features = [
+    { id: 'overview', label: 'Overview', icon: Sparkles },
+    { id: 'quick', label: 'Quick', icon: Sparkles },
+    { id: 'gayatri', label: 'Gāyatrī', icon: Sun },
+    { id: 'chandas', label: 'Chandas', icon: Music },
+    { id: 'deities', label: 'Deities', icon: Flame },
+    { id: 'graph', label: 'Graph', icon: Network },
+    { id: 'moodboard', label: 'Moodboard', icon: BookOpen },
+    { id: 'accent', label: 'Accents', icon: GraduationCap },
+    { id: 'inspector', label: 'Inspector', icon: Music },
+    { id: 'quiz', label: 'Quiz', icon: Brain },
+    { id: 'linter', label: 'Linter', icon: Shield },
+    { id: 'music', label: 'Music', icon: Music },
+  ];
+
   return (
-    <nav className="border-b bg-card/50 backdrop-blur-sm sticky top-0 z-50">
-      <div className="container mx-auto px-4 py-3">
-        <div className="flex items-center justify-between gap-4 flex-wrap">
+    <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="container mx-auto px-4">
+        <div className="flex h-16 items-center justify-between">
           {/* Brand */}
           <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[var(--vedic-saffron)] to-[var(--vedic-amber)] flex items-center justify-center">
@@ -91,104 +106,19 @@ export default function RigvedaNav() {
             </span>
           </Link>
 
-          {/* Navigation Links */}
-          <div className="hidden lg:flex items-center gap-2 flex-1 justify-center">
-            <Button variant="ghost" size="sm" asChild>
-              <Link href="/search">
-                <Search className="w-4 h-4 mr-2" />
-                Search
-              </Link>
-            </Button>
-
-            {/* Mandala Dropdown */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm">
-                  Mandala <ChevronDown className="w-4 h-4 ml-1" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="max-h-64 overflow-y-auto">
-                {mandalas.map((num) => (
-                  <DropdownMenuItem key={num} asChild>
-                    <Link href={`/mandala/${num}`}>Mandala {num}</Link>
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
-
-            {/* Language Dropdown */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm">
-                  Language <ChevronDown className="w-4 h-4 ml-1" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuItem onClick={() => changeLanguage('en')}>
-                  {language === 'en' && '✓ '}English
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => changeLanguage('sa')}>
-                  {language === 'sa' && '✓ '}Sanskrit
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => changeLanguage('de')}>
-                  {language === 'de' && '✓ '}German
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-
-            {/* Font Size Dropdown */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm">
-                  <Type className="w-4 h-4 mr-1" />
-                  <ChevronDown className="w-4 h-4 ml-1" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuItem onClick={() => changeFontSize('small')}>
-                  {fontSize === 'small' && '✓ '}Small
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => changeFontSize('medium')}>
-                  {fontSize === 'medium' && '✓ '}Medium
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => changeFontSize('large')}>
-                  {fontSize === 'large' && '✓ '}Large
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-
-            {/* Theme Toggle */}
-            <Button variant="ghost" size="sm" onClick={toggleTheme}>
-              {theme === 'light' ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
-            </Button>
-
-            <Button variant="ghost" size="sm" asChild>
-              <Link href="/help">
-                <HelpCircle className="w-4 h-4 mr-2" />
-                Help
-              </Link>
-            </Button>
-
-            <Button variant="ghost" size="sm" asChild>
-              <Link href="/about">
-                <Info className="w-4 h-4 mr-2" />
-                About
-              </Link>
-            </Button>
-
-            <Button variant="ghost" size="sm" asChild>
-              <Link href="/contact">
-                <Mail className="w-4 h-4 mr-2" />
-                Contact
-              </Link>
-            </Button>
-
-            <Button variant="ghost" size="sm" asChild>
-              <a href="https://github.com" target="_blank" rel="noopener noreferrer">
-                <Github className="w-4 h-4 mr-2" />
-                GitHub
-              </a>
-            </Button>
+          {/* Features Navigation */}
+          <div className="hidden lg:flex items-center gap-1 flex-1 justify-center">
+            {features.map((feature) => {
+              const Icon = feature.icon;
+              return (
+                <Link key={feature.id} href={`/#${feature.id}`}>
+                  <Button variant="ghost" size="sm" className="gap-1.5">
+                    <Icon className="w-4 h-4" />
+                    {feature.label}
+                  </Button>
+                </Link>
+              );
+            })}
           </div>
 
           {/* Search Input */}
